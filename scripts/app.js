@@ -284,7 +284,7 @@ function renderUI(displayData) {
     </nav>
 
     <aside class="menu">
-        <img title="Close Menu" src="/assets/menu-icons/x-lg.svg" class="close-icon">
+        <img title="Close Menu" src="assets/menu-icons/x-lg.svg" class="close-icon">
         <div class="list">
             <div class="tab active" data-location="Your Location">
                 <p class="tab-location">Your Location</p>
