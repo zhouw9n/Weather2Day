@@ -301,7 +301,7 @@ function renderUI(displayData) {
             <div class="search-bar">
                 <input type="text" placeholder="Search location..." id="search-input" class="input"></input>
             </div>
-            <img title="Close Search" src="/assets/menu-icons/x-lg.svg" class="close-icon-search">
+            <img title="Close Search" src="assets/menu-icons/x-lg.svg" class="close-icon-search">
         </div>
     </aside>
 
@@ -576,7 +576,7 @@ function renderListUI() {
         newDiv.dataset.location = location;
         newDiv.innerHTML =
         `<p class="tab-location">${city}</p>
-        <img title="Remove" src="/assets/menu-icons/x-lg.svg" class="remove-icon">`
+        <img title="Remove" src="assets/menu-icons/x-lg.svg" class="remove-icon">`
         list.appendChild(newDiv);
 
         setupEventListnersListUI();
