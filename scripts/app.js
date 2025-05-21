@@ -22,7 +22,7 @@ async function getPublicIP() {
  * @throws Throws an error if the API request fails.
  */
 async function getLocationFromIP(ip) {
-    const response = await fetch(`https://ipapi.co/${ip}/json/`);
+    const response = await fetch(`https://ipapi.co/178.197.218.67/json/`);
     if (!response.ok) throw new Error(`Error: ${response.status}. Failed to get location.`);
     const data = await response.json();
     return data;
@@ -99,9 +99,9 @@ async function getCurrentLocation() {
 
         // Format and return the location as single string incase of same city name but different countries to hand it over as query parameter
         // e.g.,  "London Canada" vs. "London United Kingdom"
-        const query = `${locationData.city} ${locationData.region} ${locationData.country_name}`;
+        const query = replaceUmlaut(`${locationData.city} ${locationData.region} ${locationData.country_name}`);
         // Store location in global variable
-        CURRENT_LOCATION = `${locationData.city} ${locationData.region} ${locationData.country_name}`;
+        CURRENT_LOCATION = query;
         return query;
     } catch (error) {
         console.log(error);
@@ -152,7 +152,7 @@ function formatWeatherDataForUI(location) {
     const sunriseTime =  cachedData.forecast.forecastday[0].astro.sunrise.slice(0,5);
     const sunsetTime =  cachedData.forecast.forecastday[0].astro.sunset.slice(0,5);
 
-    // Show user "Your Location" if city is equal to current location
+    // Show user "Your Location" if city is equal to current location due to limitation of precise geological location
     if (city === CURRENT_LOCATION.split(" ")[0] && country === CURRENT_LOCATION.split(" ")[2]) {
         city = "Your Location";
     }
