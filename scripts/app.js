@@ -23,7 +23,12 @@ async function getPublicIP() {
  */
 async function getLocationFromIP(ip) {
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
-    if (!response.ok) throw new Error(`Error: ${response.status}. Failed to get location.`);
+    if (!response.ok) { 
+        const error = new Error(`${response.status}`);
+        error.status = response.status;
+        error.body = await response.json();
+        throw error;
+    }
     const data = await response.json();
     return data;
 }
@@ -70,9 +75,13 @@ let SEARCH_ACTIVE = false;
 window.onload = init();
 
 async function init() {
+    try {
         const query = await getCurrentLocation();
         await loadWeather(query);
         renderListUI();
+    } catch {
+        rederLoadScreenError();
+    }
 }
 
 // Event listener to close menu or search bar if user clicks outside of element
@@ -103,7 +112,8 @@ async function getCurrentLocation() {
         CURRENT_LOCATION = query;
         return query;
     } catch (error) {
-        console.log(error);
+        console.log(error.status);
+        console.log(error.body);
     }
 }
 
@@ -447,22 +457,26 @@ async function getSearchResult() {
     removeResult();
 
     const input = document.querySelector(".input");
-    const query = replaceUmlaut(input.value);
+    const query = replaceUmlaut(input.value).trim();
 
     let suggestedLocations;
     const regex = /^[a-zA-Z,\-\s]+$/;
     if (query.length >= 4 && regex.test(query)) {
         suggestedLocations = await fetchLocationSuggestions(query);
-    
+        // If response array is empty display not found
+        if (suggestedLocations.length === 0) {
+            renderNotFound();
+            return;
+        }
+        
         const filteredLocations = filterUniqueLocations(suggestedLocations);
-    
         for (let i = filteredLocations.length - 1; i >= 0; i--) {
             const location = filteredLocations[i];
 
             renderSearchResult(location);
         }
     } else {
-        // CODE NOT FOUND MESSAGE
+        renderNotFound();
     }    
 }
 
@@ -515,6 +529,17 @@ function renderSearchResult(location) {
         setActiveTab(suggestedLocation);
         
     });
+}
+
+function renderNotFound() {
+    const searchBar = document.querySelector(".search-bar");
+    const newDiv = document.createElement("div");
+    
+    newDiv.classList.add("search-result");
+    newDiv.classList.add("not-found");
+    newDiv.innerHTML = "<p>Not found</p>";
+
+    searchBar.appendChild(newDiv);
 }
 
 function removeResult() {
@@ -592,7 +617,8 @@ function setupEventListnersListUI() {
             const locationKey = parentDiv.dataset.location;
             await closeMenu();
             removeFromSavedLocations(locationKey);
-            loadWeather(CURRENT_LOCATION);
+            await loadWeather(CURRENT_LOCATION);
+            renderListUI();
         });
     });
 
@@ -642,4 +668,15 @@ function debounce(func, delay) {
     }
 }
 
+function rederLoadScreenError() {
+    const loadingScreen = document.querySelector(".loading-screen");
+    loadingScreen.innerHTML =
+    `<h1>Weather2Day</h1>
+        <div class="container-error">
+            <h3>Sorry</h3>
+            <h3>Something went wrong</h3>
+            <h3>Please try again later</h3>
+        </div>
+        <p class="provider">Powered by <a href="https://www.weatherapi.com/" target="_blank" rel="noopener noreferrer">WeatherAPI</a></p>`
+}
 
