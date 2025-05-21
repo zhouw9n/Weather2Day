@@ -308,7 +308,10 @@ function renderUI(displayData) {
         <div class="container-search">
             <div class="icon-placeholder"></div>
             <div class="search-bar">
-                <input type="text" placeholder="Search location..." id="search-input" class="input"></input>
+                <div class="container-input">
+                    <input type="text" placeholder="Search location..." id="search-input" class="input"></input>
+                    <div class="search-loader"></div>
+                </div>
             </div>
             <img title="Close Search" src="assets/menu-icons/x-lg.svg" class="close-icon-search">
         </div>
@@ -462,9 +465,11 @@ async function getSearchResult() {
     let suggestedLocations;
     const regex = /^[a-zA-Z,\-\s]+$/;
     if (query.length >= 4 && regex.test(query)) {
+        renderLoader();
         suggestedLocations = await fetchLocationSuggestions(query);
         // If response array is empty display not found
         if (suggestedLocations.length === 0) {
+            disableLoader();
             renderNotFound();
             return;
         }
@@ -472,12 +477,22 @@ async function getSearchResult() {
         const filteredLocations = filterUniqueLocations(suggestedLocations);
         for (let i = filteredLocations.length - 1; i >= 0; i--) {
             const location = filteredLocations[i];
-
+            disableLoader();
             renderSearchResult(location);
         }
-    } else {
+    } else if (query !== "") {
         renderNotFound();
     }    
+}
+
+function renderLoader() {
+    const loader = document.querySelector(".search-loader");
+    loader.classList.add("active"); 
+}
+
+function disableLoader() {
+    const loader = document.querySelector(".search-loader.active");
+    loader.classList.remove("active");
 }
 
 function replaceUmlaut(str) {
