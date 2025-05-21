@@ -22,7 +22,7 @@ async function getPublicIP() {
  * @throws Throws an error if the API request fails.
  */
 async function getLocationFromIP(ip) {
-    const response = await fetch(`https://ipapi.co/178.197.218.67/json/`);
+    const response = await fetch(`https://ipapi.co/${ip}/json/`);
     if (!response.ok) throw new Error(`Error: ${response.status}. Failed to get location.`);
     const data = await response.json();
     return data;
@@ -75,14 +75,13 @@ async function init() {
         renderListUI();
 }
 
-
+// Event listener to close menu or search bar if user clicks outside of element
 document.addEventListener("click", (event) => {
     const menu = document.querySelector(".menu");
     const hamburgerIcon = document.querySelector(".hamburger-icon");
     if (MENU_ACTIVE && !menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
         closeMenu();
     }
-
     const searchBar = document.querySelector(".search-bar");
     const searchIcon = document.querySelector(".search-icon");
     const input = document.querySelector(".input");
@@ -593,7 +592,7 @@ function setupEventListnersListUI() {
             const locationKey = parentDiv.dataset.location;
             await closeMenu();
             removeFromSavedLocations(locationKey);
-            init();
+            loadWeather(CURRENT_LOCATION);
         });
     });
 

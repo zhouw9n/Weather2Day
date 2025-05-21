@@ -52,7 +52,7 @@ body {
     align-items: center;
     position: fixed;
     left: 0;
-    height: 100vh;
+    height: 100%;
     width: 100dvw;
     
     background-color: var(--grey-silver);
