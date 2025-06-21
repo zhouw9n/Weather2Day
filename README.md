@@ -31,6 +31,8 @@ Thank you for your patience!
 
 > ## 🛠️ Tech Stack
 
+This project highlights API handling and raw data formatting to improve usability and readability.
+
 ### Frontend
 
 - JavaScript / HTML / CSS
