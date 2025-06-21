@@ -39,6 +39,8 @@ This project highlights API handling and raw data formatting to improve usabilit
 
 ### Backend
 
+The backend is a lightweight server handling API requests securely, including API key management.
+
 - [Node.js](https://nodejs.org/)
 - [Express.js](https://expressjs.com/)
 - Hosted on: [Render](https://render.com/)
