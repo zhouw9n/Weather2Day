@@ -17,9 +17,9 @@ Thank you for your patience!
 - Displays temperature, weather condition, humidity, UV index, wind, sunrise, and sunset
 - Shows a 3-day weather forecast (limited to 3 days due to Weather API free tier)
 - Converts UV index and wind direction for more user-friendly display and additional context
-  (i.e.: UV index 8 -> Very High, wind 360° -> North)
+  (e.g, UV index 8 -> Very High, wind 360° -> North)
 - Search for cities/locations with autocomplete suggestions
-- Custom weather code-to-icon mapping (i.e.: code 103 -> Sunny)
+- Custom weather code-to-icon mapping (e.g., code 103 -> Sunny)
 - Saves previously searched locations in `localStorage`
 - Clean and modern UI
 - Fully responsive on all screen sizes
